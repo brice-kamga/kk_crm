@@ -37,10 +37,13 @@ class ServiziConsulenzaDAOTest {
         aziendaDAO = new AziendaDAOMySQLJDBCImpl(conn);
         utenteDAO = new UtenteDAOMySQLJDBCImpl(conn);
 
-        eseguiUpdate("DELETE FROM proposte");
-        eseguiUpdate("DELETE FROM servizi_consulenza");
-        eseguiUpdate("DELETE FROM azienda");
-        eseguiUpdate("DELETE FROM utente");
+        try (java.sql.Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM proposte");
+            stmt.executeUpdate("DELETE FROM servizi_consulenza");
+            stmt.executeUpdate("DELETE FROM cliente");
+            stmt.executeUpdate("DELETE FROM azienda");
+            stmt.executeUpdate("DELETE FROM utente");
+        }
 
         // Setup base per poter inserire proposte
         utenteDAO.create("owner", "p", "a", "CF1");

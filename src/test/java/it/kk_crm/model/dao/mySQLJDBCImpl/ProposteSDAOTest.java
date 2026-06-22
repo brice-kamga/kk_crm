@@ -42,10 +42,13 @@ class ProposteSDAOTest {
         proposteDAO = new ProposteSDAOMySQLJDBCImpl(conn);
 
         // Pulizia
-        eseguiUpdate("DELETE FROM proposte");
-        eseguiUpdate("DELETE FROM servizi_consulenza");
-        eseguiUpdate("DELETE FROM azienda");
-        eseguiUpdate("DELETE FROM utente");
+        try (java.sql.Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM proposte");
+            stmt.executeUpdate("DELETE FROM servizi_consulenza");
+            stmt.executeUpdate("DELETE FROM cliente");
+            stmt.executeUpdate("DELETE FROM azienda");
+            stmt.executeUpdate("DELETE FROM utente");
+        }
 
         // 1. Creiamo Utente e Azienda (Il Cliente della proposta)
         utenteDAO.create(TEST_OWNER, "pass", "admin", "CFOWNER123");

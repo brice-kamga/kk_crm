@@ -145,9 +145,12 @@ class UtenteDAOTest {
 
     @Test
     void testLoadAll() throws Exception {
-        // 1. Puliamo la tabella per partire da zero (opzionale ma consigliato per count precisi)
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM utente")) {
-            ps.executeUpdate();
+        /// 1. Pulizia completa per rispettare i vincoli di chiave esterna (Foreign Keys)
+        try (java.sql.Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM proposte");
+            stmt.executeUpdate("DELETE FROM cliente");
+            stmt.executeUpdate("DELETE FROM azienda");
+            stmt.executeUpdate("DELETE FROM utente");
         }
 
         // 2. Inseriamo 3 utenti diversi
@@ -167,13 +170,15 @@ class UtenteDAOTest {
 
     @Test
     void testLoadAllUtenti_FiltroRegistrato() throws Exception {
-        // 1. Nettoyage préventif
-        try (PreparedStatement ps = conn.prepareStatement("DELETE FROM utente")) {
-            ps.executeUpdate();
+        // 1. Pulizia preventiva rispettando l'ordine gerarchico delle tabelle
+        try (java.sql.Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM proposte");
+            stmt.executeUpdate("DELETE FROM cliente");
+            stmt.executeUpdate("DELETE FROM azienda");
+            stmt.executeUpdate("DELETE FROM utente");
         }
 
-        // 2. Préparation des données (Scénario mixte)
-        // Candidat IDEAL : Type 'registrato' et Actif
+        // 2.
         dao.create("mario.registrato", "pass", "registrato", "CFREG1");
 
         // Candidat MAUVAIS TYPE : Type 'admin' (ne doit pas être chargé)

@@ -39,6 +39,7 @@ class AziendaDAOTest {
 
         // 2. Pulizia: Cancelliamo tutto per partire da zero
         // L'ordine è importante per le Foreign Key: prima le figlie (aziende), poi i padri (utenti)
+        eseguiUpdate("DELETE FROM proposte");
         eseguiUpdate("DELETE FROM cliente");
         eseguiUpdate("DELETE FROM azienda");
         eseguiUpdate("DELETE FROM utente");
