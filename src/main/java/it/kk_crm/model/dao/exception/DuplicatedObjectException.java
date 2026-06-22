@@ -1,0 +1,10 @@
+package it.kk_crm.model.dao.exception;
+
+public class DuplicatedObjectException extends Exception {
+    public DuplicatedObjectException() {
+    }
+
+    public DuplicatedObjectException(String msg) {
+        super(msg);
+    }
+}
