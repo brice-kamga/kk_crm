@@ -30,3 +30,10 @@ jobs:
 
     - name: Esecuzione dei test con Maven
       run: mvn test
+
+    - name: Salvataggio del report di copertura (JaCoCo)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-coverage-report
+        path: target/site/jacoco/
