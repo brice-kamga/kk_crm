@@ -1,0 +1,7 @@
+<glassfish-web-app>
+    <jsp-config>
+        <property name="compilerSourceVM" value="8" />
+        <property name="compilerTargetVM" value="8" />
+    </jsp-config>
+    <context-root>/kk_crm</context-root>
+</glassfish-web-app>
