@@ -15,7 +15,7 @@ class UtenteTest {
         String cf = "RSSMRA80A01H501Z";
         String isDeleted = "N";
 
-        // 2. Act (Esecuzione dei setter
+        // 2. Act (Esecuzione dei setter)
         utente.setUsername(username);
         utente.setPassword(password);
         utente.setTipo(tipo);

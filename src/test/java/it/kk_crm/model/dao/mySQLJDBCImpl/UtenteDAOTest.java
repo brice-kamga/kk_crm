@@ -145,7 +145,7 @@ class UtenteDAOTest {
 
     @Test
     void testLoadAll() throws Exception {
-        /// 1. Pulizia completa per rispettare i vincoli di chiave esterna (Foreign Keys)
+        // 1. Pulizia completa per rispettare i vincoli di chiave esterna (Foreign Keys)
         try (java.sql.Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("DELETE FROM proposte");
             stmt.executeUpdate("DELETE FROM cliente");
@@ -165,7 +165,7 @@ class UtenteDAOTest {
 
         // 4. Verifichiamo
         assertNotNull(lista);
-        assertEquals(3, lista.size(), "Dovrebbero esserci 3 utenti nel DB");
+        assertEquals(3, lista.size(), "Dovrebbero eccerci 3 utenti nel DB");
     }
 
     @Test
@@ -178,34 +178,34 @@ class UtenteDAOTest {
             stmt.executeUpdate("DELETE FROM utente");
         }
 
-        // 2.
+        // 2. Inserimento dei dati di test
         dao.create("mario.registrato", "pass", "registrato", "CFREG1");
 
-        // Candidat MAUVAIS TYPE : Type 'admin' (ne doit pas être chargé)
+        // Candidato TIPO ERRATO: Tipo 'admin' (non deve essere caricato)
         dao.create("luigi.admin", "pass", "admin", "CFADM1");
 
-        // Candidat SUPPRIMÉ : Type 'registrato' mais Deleted='Y' (ne doit pas être chargé)
-        // On le crée d'abord...
+        // Candidato CANCELLATO: Tipo 'registrato' ma Deleted='Y' (non deve essere caricato)
+        // Lo creiamo prima...
         dao.create("zombie.user", "pass", "registrato", "CFDEL1");
         conn.commit();
-        // ...puis on le supprime
+        // ...e poi lo cancelliamo logicamente
         Utente zombie = new Utente();
         zombie.setUsername("zombie.user");
         dao.delete(zombie);
         conn.commit();
 
-        // 3. Action : On appelle la méthode spécifique
+        // 3. Azione: Chiamiamo il metodo specifico
         System.out.println("Test: Load All Utenti (Solo Registrati)...");
         List<Utente> listaFiltrata = dao.loadAllUtenti();
 
-        // 4. Vérification
+        // 4. Verifica
         assertNotNull(listaFiltrata);
 
-        // On s'attend à trouver EXACTEMENT 1 seul utilisateur (mario.registrato)
-        // Les deux autres doivent être ignorés par le SQL
+        // Ci aspettiamo di trovare ESATTAMENTE 1 solo utente (mario.registrato)
+        // Gli altri due devono essere ignorati dalla query SQL
         assertEquals(1, listaFiltrata.size(), "Deve caricare solo gli utenti 'registrato' attivi");
 
-        // On vérifie que c'est bien lui
+        // Verifichiamo che si tratti effettivamente di lui
         assertEquals("mario.registrato", listaFiltrata.get(0).getUsername());
     }
 }
