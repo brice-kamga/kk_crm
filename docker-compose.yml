@@ -1,0 +1,23 @@
+services:
+  db_mysql:
+    image: mysql:8.0
+    container_name: crm-database
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "crm"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./kk_crm.sql:/docker-entrypoint-initdb.d/init.sql
+      - db_data:/var/lib/mysql
+
+  app_crm:
+    build: .
+    container_name: crm-app
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db_mysql
+
+volumes:
+  db_data:
